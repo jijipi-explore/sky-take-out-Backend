@@ -80,11 +80,11 @@ public class EmployeeController {
     /**
      * 新增员工
      * @param employeeDTO
-     * @return Result
+     * @return Result<Void>
      */
     @PostMapping
     @ApiOperation("新增员工")
-    public Result save(@RequestBody EmployeeDTO employeeDTO){
+    public Result<Void> save(@RequestBody EmployeeDTO employeeDTO){
         /* 客户端每一次发起的请求都是单独的线程 */
 //        System.out.println("当前线程id：" + Thread.currentThread().getId());
 
@@ -96,7 +96,7 @@ public class EmployeeController {
     /**
      * 员工分页查询
      * @param employeePageQueryDTO
-     * @return
+     * @return Result<PageResult>
      */
     @GetMapping("/page")
     @ApiOperation("员工分页查询")
@@ -110,14 +110,39 @@ public class EmployeeController {
      * 启用禁用员工账号
      * @param status
      * @param id
-     * @return
+     * @return Result<Void>
      */
     @PostMapping("/status/{status}")
     @ApiOperation("启用禁用员工账号")
-    public Result startOrStop(@PathVariable Integer status, Long id){
+    public Result<Void> startOrStop(@PathVariable Integer status, Long id){
         log.info("启用禁用员工账号：{},{}", status, id);
         employeeService.startOrStop(status, id);
         return Result.success();
     }
 
+    /**
+     * 根据id查询员工信息
+     * @param id 员工id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> getById(@PathVariable Long id){
+        log.info("根据id查询员工信息：{}", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    /**
+     * 编辑员工信息
+     * @param employeeDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result<Void> update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("编辑员工信息：{}", employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
 }
