@@ -221,7 +221,8 @@ public class ReportServiceImpl implements ReportService {
             //基于模板文件创建一个新的Excel文件
             XSSFWorkbook excel = new XSSFWorkbook(inputStream);
             //填充数据--时间
-            XSSFSheet sheet = excel.getSheet("sheet1");
+            XSSFSheet sheet = excel.getSheet("Sheet1");
+            sheet.getRow(1).getCell(1).setCellValue("时间" + begin + "至" + end);
 
             //获得第4行
             XSSFRow row = sheet.getRow(3);
